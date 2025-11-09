@@ -1,0 +1,170 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Definition of the design system. All colors, gradients, fonts, etc should be defined here. 
+All colors MUST be HSL.
+*/
+
+@layer base {
+  :root {
+    /* Dark Mode - Deep Purple/Blue Glassmorphic Theme */
+    --background: 250 60% 10%;
+    --foreground: 250 40% 98%;
+    
+    --card: 250 50% 15%;
+    --card-foreground: 250 40% 98%;
+    
+    --popover: 250 50% 12%;
+    --popover-foreground: 250 40% 98%;
+    
+    --primary: 270 70% 60%;
+    --primary-foreground: 250 40% 98%;
+    
+    --secondary: 250 50% 20%;
+    --secondary-foreground: 250 40% 98%;
+    
+    --muted: 250 40% 25%;
+    --muted-foreground: 250 20% 70%;
+    
+    --accent: 280 80% 65%;
+    --accent-foreground: 250 40% 98%;
+    
+    --destructive: 0 70% 55%;
+    --destructive-foreground: 250 40% 98%;
+    
+    --border: 250 40% 25%;
+    --input: 250 40% 20%;
+    --ring: 270 70% 60%;
+    
+    --radius: 1rem;
+    
+    /* Gradient tokens */
+    --gradient-primary: linear-gradient(135deg, hsl(270, 70%, 60%), hsl(280, 80%, 65%));
+    --gradient-glass: linear-gradient(135deg, rgba(139, 92, 246, 0.1), rgba(168, 85, 247, 0.05));
+    
+    /* Glassmorphic tokens */
+    --glass-bg: rgba(139, 92, 246, 0.08);
+    --glass-border: rgba(139, 92, 246, 0.2);
+    --glass-shadow: 0 8px 32px rgba(139, 92, 246, 0.15);
+    
+    /* Sidebar */
+    --sidebar-background: 250 50% 12%;
+    --sidebar-foreground: 250 40% 98%;
+    --sidebar-primary: 270 70% 60%;
+    --sidebar-primary-foreground: 250 40% 98%;
+    --sidebar-accent: 250 50% 20%;
+    --sidebar-accent-foreground: 250 40% 98%;
+    --sidebar-border: 250 40% 25%;
+    --sidebar-ring: 270 70% 60%;
+  }
+
+  .saffron {
+    /* Saffron Mode - Warm Orange/Yellow Glassmorphic Theme */
+    --background: 35 60% 10%;
+    --foreground: 35 40% 98%;
+    
+    --card: 35 50% 15%;
+    --card-foreground: 35 40% 98%;
+    
+    --popover: 35 50% 12%;
+    --popover-foreground: 35 40% 98%;
+    
+    --primary: 40 90% 60%;
+    --primary-foreground: 35 10% 10%;
+    
+    --secondary: 35 50% 20%;
+    --secondary-foreground: 35 40% 98%;
+    
+    --muted: 35 40% 25%;
+    --muted-foreground: 35 20% 70%;
+    
+    --accent: 45 95% 65%;
+    --accent-foreground: 35 10% 10%;
+    
+    --destructive: 0 70% 55%;
+    --destructive-foreground: 35 40% 98%;
+    
+    --border: 35 40% 25%;
+    --input: 35 40% 20%;
+    --ring: 40 90% 60%;
+    
+    /* Gradient tokens */
+    --gradient-primary: linear-gradient(135deg, hsl(40, 90%, 60%), hsl(45, 95%, 65%));
+    --gradient-glass: linear-gradient(135deg, rgba(251, 191, 36, 0.1), rgba(252, 211, 77, 0.05));
+    
+    /* Glassmorphic tokens */
+    --glass-bg: rgba(251, 191, 36, 0.08);
+    --glass-border: rgba(251, 191, 36, 0.2);
+    --glass-shadow: 0 8px 32px rgba(251, 191, 36, 0.15);
+    
+    /* Sidebar */
+    --sidebar-background: 35 50% 12%;
+    --sidebar-foreground: 35 40% 98%;
+    --sidebar-primary: 40 90% 60%;
+    --sidebar-primary-foreground: 35 10% 10%;
+    --sidebar-accent: 35 50% 20%;
+    --sidebar-accent-foreground: 35 40% 98%;
+    --sidebar-border: 35 40% 25%;
+    --sidebar-ring: 40 90% 60%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground antialiased;
+    background-image: radial-gradient(circle at 20% 50%, rgba(139, 92, 246, 0.15) 0%, transparent 50%),
+                      radial-gradient(circle at 80% 80%, rgba(168, 85, 247, 0.15) 0%, transparent 50%);
+    background-attachment: fixed;
+  }
+  
+  .saffron body {
+    background-image: radial-gradient(circle at 20% 50%, rgba(251, 191, 36, 0.15) 0%, transparent 50%),
+                      radial-gradient(circle at 80% 80%, rgba(252, 211, 77, 0.15) 0%, transparent 50%);
+  }
+}
+
+@layer utilities {
+  /* Glassmorphic card effect */
+  .glass-card {
+    background: var(--glass-bg);
+    backdrop-filter: blur(16px) saturate(180%);
+    -webkit-backdrop-filter: blur(16px) saturate(180%);
+    border: 1px solid var(--glass-border);
+    box-shadow: var(--glass-shadow);
+  }
+  
+  /* Gradient text */
+  .gradient-text {
+    background: var(--gradient-primary);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  
+  /* Hover lift effect */
+  .hover-lift {
+    transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1), 
+                box-shadow 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  
+  .hover-lift:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 20px 60px rgba(139, 92, 246, 0.35);
+  }
+  
+  .saffron .hover-lift:hover {
+    box-shadow: 0 20px 60px rgba(251, 191, 36, 0.35);
+  }
+
+  /* Neon glow effect */
+  .neon-glow {
+    box-shadow: 0 0 20px rgba(139, 92, 246, 0.4),
+                0 0 40px rgba(139, 92, 246, 0.2),
+                inset 0 0 20px rgba(139, 92, 246, 0.1);
+  }
+}
