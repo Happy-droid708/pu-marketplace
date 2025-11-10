@@ -1,7 +1,6 @@
 {
   "name": "vite_react_shadcn_ts",
   "private": true,
-  "homepage": "https://Happy-droid708.github.io/pu-marketplace-2-/",
   "version": "0.0.0",
   "type": "module",
   "scripts": {
