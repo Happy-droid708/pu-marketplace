@@ -210,15 +210,24 @@ bun install
 
 ### **Step 3: Set Up Environment Variables**
 
-Create a `.env` file in the root directory:
+Copy the example file and fill in your own Supabase credentials:
 
-```env
-VITE_SUPABASE_URL=your_supabase_project_url
-VITE_SUPABASE_PUBLISHABLE_KEY=your_supabase_anon_key
-VITE_SUPABASE_PROJECT_ID=your_supabase_project_id
+```bash
+cp .env.example .env
 ```
 
-You can find these credentials in your Supabase project settings.
+Then open `.env` and replace the placeholder values:
+
+```env
+VITE_SUPABASE_PROJECT_ID="<your-project-id>"
+VITE_SUPABASE_PUBLISHABLE_KEY="<your-anon-key>"
+VITE_SUPABASE_URL="https://<your-project-ref>.supabase.co"
+```
+
+You can find these values in your Supabase project settings under **Settings → API**.
+
+> ⚠️ **Never commit `.env`** — it is listed in `.gitignore` to prevent accidentally leaking secrets.
+> Only `.env.example` (with placeholder values) should be committed.
 
 ### **Step 4: Set Up Supabase**
 
