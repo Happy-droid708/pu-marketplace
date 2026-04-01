@@ -4,16 +4,20 @@ import type { Database } from './types';
 
 const SUPABASE_PROJECT_ID =
   import.meta.env.VITE_SUPABASE_PROJECT_ID ||
-  import.meta.env.NEXT_PUBLIC_SUPABASE_PROJECT_ID;
+  import.meta.env.NEXT_PUBLIC_SUPABASE_PROJECT_ID ||
+  import.meta.env.SUPABASE_PROJECT_ID;
 const SUPABASE_URL =
   import.meta.env.VITE_SUPABASE_URL ||
   import.meta.env.NEXT_PUBLIC_SUPABASE_URL ||
+  import.meta.env.SUPABASE_URL ||
   (SUPABASE_PROJECT_ID ? `https://${SUPABASE_PROJECT_ID}.supabase.co` : undefined);
 const SUPABASE_PUBLISHABLE_KEY =
   import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY ||
   import.meta.env.VITE_SUPABASE_ANON_KEY ||
   import.meta.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY ||
-  import.meta.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+  import.meta.env.NEXT_PUBLIC_SUPABASE_ANON_KEY ||
+  import.meta.env.SUPABASE_PUBLISHABLE_KEY ||
+  import.meta.env.SUPABASE_ANON_KEY;
 
 const FALLBACK_SUPABASE_URL = 'https://invalid.localhost';
 const FALLBACK_SUPABASE_KEY = 'missing-supabase-key';
@@ -31,10 +35,10 @@ export const supabase = createClient<Database>(
   SUPABASE_URL || FALLBACK_SUPABASE_URL,
   SUPABASE_PUBLISHABLE_KEY || FALLBACK_SUPABASE_KEY,
   {
-  auth: {
-    storage: localStorage,
-    persistSession: true,
-    autoRefreshToken: true,
+    auth: {
+      storage: localStorage,
+      persistSession: true,
+      autoRefreshToken: true,
+    },
   }
-}
 );
