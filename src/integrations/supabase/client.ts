@@ -23,9 +23,11 @@ const FALLBACK_SUPABASE_URL = 'https://invalid.localhost';
 const FALLBACK_SUPABASE_KEY = 'missing-supabase-key';
 
 if (!SUPABASE_URL || !SUPABASE_PUBLISHABLE_KEY) {
-  console.error(
-    'Missing Supabase configuration. Set VITE_SUPABASE_URL (or VITE_SUPABASE_PROJECT_ID) and VITE_SUPABASE_PUBLISHABLE_KEY (or VITE_SUPABASE_ANON_KEY). NEXT_PUBLIC_* aliases are also supported.'
-  );
+  if (import.meta.env.DEV) {
+    console.warn(
+      'Missing Supabase configuration. Set VITE_SUPABASE_URL (or VITE_SUPABASE_PROJECT_ID) and VITE_SUPABASE_PUBLISHABLE_KEY (or VITE_SUPABASE_ANON_KEY). NEXT_PUBLIC_* and SUPABASE_* aliases are also supported.'
+    );
+  }
 }
 
 // Import the supabase client like this:
