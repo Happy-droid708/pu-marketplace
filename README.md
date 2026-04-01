@@ -212,6 +212,8 @@ bun install
 
 Create a `.env` file in the root directory:
 
+You can start from `.env.example` and fill in your own Supabase values.
+
 ```env
 VITE_SUPABASE_URL=your_supabase_project_url
 VITE_SUPABASE_PUBLISHABLE_KEY=your_supabase_anon_key
