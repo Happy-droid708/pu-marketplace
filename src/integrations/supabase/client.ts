@@ -2,10 +2,16 @@
 import { createClient } from '@supabase/supabase-js';
 import type { Database } from './types';
 
+const DEFAULT_SUPABASE_PROJECT_ID = 'osginnfycisdoeqreudu';
+const DEFAULT_SUPABASE_URL = `https://${DEFAULT_SUPABASE_PROJECT_ID}.supabase.co`;
+const DEFAULT_SUPABASE_PUBLISHABLE_KEY =
+  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9zZ2lubmZ5Y2lzZG9lcXJldWR1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjI1NzE3NTAsImV4cCI6MjA3ODE0Nzc1MH0.Q6vqRMpb4kBN2EKVowEpg4o1-ElqaHTzRWW9XQVZnzw';
+
 const SUPABASE_PROJECT_ID =
   import.meta.env.VITE_SUPABASE_PROJECT_ID ||
   import.meta.env.NEXT_PUBLIC_SUPABASE_PROJECT_ID ||
-  import.meta.env.SUPABASE_PROJECT_ID;
+  import.meta.env.SUPABASE_PROJECT_ID ||
+  DEFAULT_SUPABASE_PROJECT_ID;
 const SUPABASE_URL =
   import.meta.env.VITE_SUPABASE_URL ||
   import.meta.env.NEXT_PUBLIC_SUPABASE_URL ||
@@ -17,18 +23,14 @@ const SUPABASE_PUBLISHABLE_KEY =
   import.meta.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY ||
   import.meta.env.NEXT_PUBLIC_SUPABASE_ANON_KEY ||
   import.meta.env.SUPABASE_PUBLISHABLE_KEY ||
-  import.meta.env.SUPABASE_ANON_KEY;
+  import.meta.env.SUPABASE_ANON_KEY ||
+  DEFAULT_SUPABASE_PUBLISHABLE_KEY;
 
-const FALLBACK_SUPABASE_URL = 'https://invalid.localhost';
-const FALLBACK_SUPABASE_KEY = 'missing-supabase-key';
-const SUPABASE_MISSING_CONFIG_MESSAGE =
-  'Supabase is not configured. Set VITE_SUPABASE_URL (or VITE/NEXT_PUBLIC/SUPABASE project id) and a publishable/anon key in deployment environment variables.';
-
-const isSupabaseConfigured = Boolean(SUPABASE_URL && SUPABASE_PUBLISHABLE_KEY);
-
-if (!isSupabaseConfigured) {
+if (!SUPABASE_URL || !SUPABASE_PUBLISHABLE_KEY) {
   if (import.meta.env.DEV) {
-    console.warn(SUPABASE_MISSING_CONFIG_MESSAGE);
+    console.warn(
+      'Missing Supabase configuration. Set VITE_SUPABASE_URL (or VITE_SUPABASE_PROJECT_ID) and VITE_SUPABASE_PUBLISHABLE_KEY (or VITE_SUPABASE_ANON_KEY). NEXT_PUBLIC_* and SUPABASE_* aliases are also supported.'
+    );
   }
 }
 
@@ -36,27 +38,9 @@ if (!isSupabaseConfigured) {
 // import { supabase } from "@/integrations/supabase/client";
 
 export const supabase = createClient<Database>(
-  SUPABASE_URL || FALLBACK_SUPABASE_URL,
-  SUPABASE_PUBLISHABLE_KEY || FALLBACK_SUPABASE_KEY,
+  SUPABASE_URL || DEFAULT_SUPABASE_URL,
+  SUPABASE_PUBLISHABLE_KEY,
   {
-    global: {
-      // Prevent noisy network failures when config is missing.
-      fetch: isSupabaseConfigured
-        ? fetch
-        : async () =>
-            new Response(
-              JSON.stringify({
-                code: 'SUPABASE_NOT_CONFIGURED',
-                message: SUPABASE_MISSING_CONFIG_MESSAGE,
-                details: '',
-                hint: '',
-              }),
-              {
-                status: 503,
-                headers: { 'Content-Type': 'application/json' },
-              }
-            ),
-    },
     auth: {
       storage: localStorage,
       persistSession: true,
