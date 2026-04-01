@@ -21,12 +21,14 @@ const SUPABASE_PUBLISHABLE_KEY =
 
 const FALLBACK_SUPABASE_URL = 'https://invalid.localhost';
 const FALLBACK_SUPABASE_KEY = 'missing-supabase-key';
+const SUPABASE_MISSING_CONFIG_MESSAGE =
+  'Supabase is not configured. Set VITE_SUPABASE_URL (or VITE/NEXT_PUBLIC/SUPABASE project id) and a publishable/anon key in deployment environment variables.';
 
-if (!SUPABASE_URL || !SUPABASE_PUBLISHABLE_KEY) {
+const isSupabaseConfigured = Boolean(SUPABASE_URL && SUPABASE_PUBLISHABLE_KEY);
+
+if (!isSupabaseConfigured) {
   if (import.meta.env.DEV) {
-    console.warn(
-      'Missing Supabase configuration. Set VITE_SUPABASE_URL (or VITE_SUPABASE_PROJECT_ID) and VITE_SUPABASE_PUBLISHABLE_KEY (or VITE_SUPABASE_ANON_KEY). NEXT_PUBLIC_* and SUPABASE_* aliases are also supported.'
-    );
+    console.warn(SUPABASE_MISSING_CONFIG_MESSAGE);
   }
 }
 
@@ -37,6 +39,24 @@ export const supabase = createClient<Database>(
   SUPABASE_URL || FALLBACK_SUPABASE_URL,
   SUPABASE_PUBLISHABLE_KEY || FALLBACK_SUPABASE_KEY,
   {
+    global: {
+      // Prevent noisy network failures when config is missing.
+      fetch: isSupabaseConfigured
+        ? fetch
+        : async () =>
+            new Response(
+              JSON.stringify({
+                code: 'SUPABASE_NOT_CONFIGURED',
+                message: SUPABASE_MISSING_CONFIG_MESSAGE,
+                details: '',
+                hint: '',
+              }),
+              {
+                status: 503,
+                headers: { 'Content-Type': 'application/json' },
+              }
+            ),
+    },
     auth: {
       storage: localStorage,
       persistSession: true,
